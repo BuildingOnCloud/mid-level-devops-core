@@ -31,5 +31,7 @@ jobs:
 
     - name: Run Flake8 Linter Audit
       run: |
+        # Stop the build if there are critical errors
         flake8 app/ --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 app/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        # Set max-line-length to 88 or 127 explicitly to clear layout errors
+        flake8 app/ --count --max-line-length=127 --statistics
