@@ -15,3 +15,15 @@
 ### Architectural Patterns Applied
 * **Multi-stage Isolation:** Reduced the footprint of the container from over 500MB down to **163MB** by stripping out pip caches and build tools.
 * **Process Signal Handling:** Wired `tini` as `PID 1` alongside custom Python OS hooks to cleanly intercept `SIGTERM` events, allowing a 3-second application traffic drain window to guarantee zero-downtime rolling updates.
+
+## 🤖 Phase 2: CI/CD Pipeline Automation Milestone
+
+### Technical Hurdles & Resolutions
+
+#### 1. Repository Initial Default Branch Mismatch
+* **Problem:** Pushing a local feature branch to a fresh, completely empty remote repository forced GitHub to assign the default branch crown to `feature/phase1-containerization` instead of `main`. This broke standard `gh pr create` sequences due to identical head/base targets.
+* **Resolution:** Synchronized the local base layer by explicitly pushing a local `main` branch upstream, then utilized the GitHub CLI (`gh repo edit --default-branch main`) to structurally re-assign the remote tracking baseline.
+
+### Architectural Patterns Applied
+* **Static Code Analysis (Linting/Formatting Verification):** Formulated an automated GitHub Actions execution graph (`ci.yml`) triggered dynamically on PR creation.
+* **Ephemeral Run Environments:** Offloaded validation execution to isolated `ubuntu-latest` virtual cloud workers, implementing standard action-caching strategies (`cache: 'pip'`) to protect compute cycles and optimize pipeline execution velocity.
